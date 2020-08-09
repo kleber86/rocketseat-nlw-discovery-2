@@ -72,6 +72,7 @@ function pageGiveClasses(req, res) {
         proffys.push(data)
         return res.redirect("/study")
     }
+    return res.render("give-classes.html", { subjects, weekdays })
 }
 
 const express = require('express')
