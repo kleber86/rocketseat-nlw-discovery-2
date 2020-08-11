@@ -1,8 +1,8 @@
 const Database = require('./db')
-const createProffy = require('./createProddy')
+const createProffy = require('./createProffy')
 
 
-Database.then((db) => {
+Database.then(async(db) => {
     proffyValue = {
         name: 'Kleber Alves',
         avatar: 'https://avatars1.githubusercontent.com/u/58371208?v=4',
@@ -11,11 +11,11 @@ Database.then((db) => {
     }
 
     classValue = {
-        subject: "Química",
+        subject: 1,
         cost: "20",
     }
 
-    classSchedule = [
+    classScheduleValues = [
         {
             weekday: 1,
             time_from: 720,
@@ -28,5 +28,31 @@ Database.then((db) => {
         },
     ]
 
-    createProffy(db, { proffyValue, classValue, classSchedule })
+   // await createProffy(db, { proffyValue, classValue, classScheduleValues })
+
+   // Consultar os dados inseridos
+   const selectedProffy = await db.all("SELECT * FROM proffys")
+   //console.table(selectedProffy)
+
+   // Consultar as classes de um determinado professor e trazer junto os dados do professor
+   const selectClassesAndProffys = await db.all(`
+        SELECT classes.*, proffys.*
+        FROM proffys
+        JOIN classes ON (classes.proffy_id = proffys.id)
+        WHERE classes.proffy_id = 1;
+    `)
+
+   // console.table(selectClassesAndProffys)
+
+    // 
+    const selectClasseSchedules = await db.all(`
+        SELECT class_schedule.*
+        FROM class_schedule
+        WHERE class_schedule.class_id = "1"
+        AND class_schedule.weekday = "0"
+        AND class_schedule.time_from <= "520"
+        AND class_schedule.time_to > "520"
+    `)
+
+    console.table(selectClasseSchedules)
 })
