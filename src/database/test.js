@@ -3,6 +3,7 @@ const createProffy = require('./createProffy')
 
 
 Database.then(async(db) => {
+
     proffyValue = {
         name: 'Kleber Alves',
         avatar: 'https://avatars1.githubusercontent.com/u/58371208?v=4',
@@ -28,12 +29,11 @@ Database.then(async(db) => {
         },
     ]
 
-   // await createProffy(db, { proffyValue, classValue, classScheduleValues })
+   await createProffy(db, { proffyValue, classValue, classScheduleValues })
 
    // Consultar os dados inseridos
    const selectedProffy = await db.all("SELECT * FROM proffys")
-   //console.table(selectedProffy)
-
+  
    // Consultar as classes de um determinado professor e trazer junto os dados do professor
    const selectClassesAndProffys = await db.all(`
         SELECT classes.*, proffys.*
@@ -41,8 +41,6 @@ Database.then(async(db) => {
         JOIN classes ON (classes.proffy_id = proffys.id)
         WHERE classes.proffy_id = 1;
     `)
-
-   // console.table(selectClassesAndProffys)
 
     // 
     const selectClasseSchedules = await db.all(`
